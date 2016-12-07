@@ -1,0 +1,92 @@
+import {resultHelp} from './../utils/ResultHelp'
+import querystring from 'querystring'
+import http from 'http'
+/**
+ * 使用原生的http 做中间层
+ * @type {{login: ((req, res?))}}
+ */
+let UserContr = {
+    login(req, res){
+        let options = {
+            hostname: 'apis.baidu.com',
+            path: '/apistore/idservice/id?id=511322198401091639',
+            method: 'get',
+            headers: {
+                "apikey": '61f975e8952b64a73e21dea683fe1236'
+            }
+        }
+        console.log('Options prepared:')
+        console.log(options)
+        console.log('Do the GET call')
+        let request = http.request(options, callback => {
+            console.log('-----------------200-----------------')
+            let str = ''
+            callback.on('data', data => {
+                console.log('-----------------data-----------------')
+                console.log('-----------------unescape data-----------------')
+                console.log(unescape((data + '').replace(/\\u/g, "%u")))
+                console.log('-----------------eval data-----------------')
+                console.log(eval("'" + data + "'"))
+                str += eval("'" + data + "'")
+            })
+                .on('end', () => {
+                    console.log('--------------end--------------------')
+                    resultHelp(res, null, str)
+                })
+        })
+        console.log('-----------------request params start----------------------')
+        console.log(request.host, request.pathname)
+        console.log(request.method)
+        console.log('-----------------request params start----------------------')
+        request.on('error', (e) => {
+            console.log(e)
+            console.log('------------------error request----------------')
+        })
+        request.end()
+    },
+    getJuHeData(req, res){
+        let data = querystring.stringify({
+            key: 'dfd38d35735fe21a694c6b63ee9a48b0',
+            page: 1,
+            pagesize: 20,
+            sort: 'asc',
+            time: (Date.now() + '').substr(0, 10)
+        })
+        let options = {
+            host: 'japi.juhe.cn',
+            path: '/joke/content/list.from?' + data,
+            method: 'GET'
+        }
+        let newOptions = {
+            host: 'v.juhe.cn',
+            path: '/wepiao/query?key=4b3d459922e88882f9c4ddd79462ab5e',
+            method: 'GET'
+        }
+        console.log('Options prepared:')
+        console.log(newOptions)
+        console.log('Do the GET call')
+        let request = http.request(newOptions, function (callback) {
+            console.log('-----------------200-----------------')
+            let str = ''
+            callback.on('data', function (data) {
+                console.log('-----------------data-----------------')
+                str += data
+            })
+                .on('end', function () {
+                    console.log('--------------end--------------------')
+                    resultHelp(res, null, str)
+                })
+        })
+        console.log('-----------------request params start----------------------')
+        console.log(request.host, request.pathname)
+        console.log(request.method)
+        console.log('-----------------request params start----------------------')
+        request.on('error', function (e) {
+            console.log(e)
+            console.log('------------------error request----------------')
+        })
+        request.end()
+    }
+}
+
+export default UserContr
