@@ -1,7 +1,6 @@
 import Mongoose from 'mongoose'
 
 
-
 let UserSchema = new Mongoose.Schema({
     userName: {
         unique: true,
@@ -13,9 +12,8 @@ let UserSchema = new Mongoose.Schema({
         default: Date.now()
     }
 })
-UserSchema.pre("save", (next) => {
-    console.log(this)
-   /* this.createAt = Date.now()*/
+UserSchema.pre("save", function (next) {
+     this.createAt = Date.now()
     next()
 })
 

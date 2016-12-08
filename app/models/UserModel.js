@@ -1,4 +1,3 @@
-import UserSchema from './../schemas/UserSchema'
 import Mongoose from "mongoose"
-
-module.exports = Mongoose.model("UserModel", UserSchema)
+import UserSchema from './../schemas/UserSchema'
+export default Mongoose.model("UserModel", UserSchema)

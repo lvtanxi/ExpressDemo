@@ -1,5 +1,4 @@
 import Mongoose from 'mongoose'
-import Moment from 'moment'
 
 
 let TaskSchema = new Mongoose.Schema({
@@ -11,13 +10,18 @@ let TaskSchema = new Mongoose.Schema({
     }
 })
 
+TaskSchema.pre("save", function (next) {
+    this.updateAt = Date.now()
+    next()
+})
 
 TaskSchema.statics = {
-    tasks(callback) {
+    tasks: function (callback) {
         return this.find({})
+            .sort({'_id': -1})
             .exec(callback)
     },
-    task (id, callback) {
+    task: function (id, callback) {
         return this.findById({_id: id})
             .exec(callback)
     },
