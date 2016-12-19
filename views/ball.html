@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>Promise animation</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="render" content="webkit">
+</head>
+<style>
+    .ball {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin-top: 5px;
+    }
+
+    .ball1 {
+        background: red;
+    }
+
+    .ball2 {
+        background: yellow;
+    }
+
+    .ball3 {
+        background: green;
+    }
+</style>
+<body>
+<div class="ball ball1" style="margin-left: 0;"></div>
+<div class="ball ball2" style="margin-left: 0;"></div>
+<div class="ball ball3" style="margin-left: 0;"></div>
+</body>
+<script>
+    var ball1 = document.querySelector(".ball1")
+    var ball2 = document.querySelector(".ball2")
+    var ball3 = document.querySelector(".ball3")
+
+    /*    function animate(ball, distance, cb) {
+     var time = setTimeout(function () {
+     var marginLeft = parseInt(ball.style.marginLeft, 10)
+     if (marginLeft === distance) {
+     clearTimeout(time)
+     cb && cb()
+     return
+     } else if (marginLeft < distance) {
+     marginLeft++
+     } else {
+     marginLeft--
+     }
+
+     ball.style.marginLeft = marginLeft + "px"
+     animate(ball, distance, cb)
+     }, 13)
+     }
+     animate(ball1, 100, function () {
+     animate(ball2, 200, function () {
+     animate(ball3, 300, function () {
+     animate(ball3, 150, function () {
+     animate(ball2, 150, function () {
+     animate(ball1, 150, function () {
+     })
+     })
+     })
+     })
+     })
+     })*/
+
+    function promiseAnimate(ball, distance) {
+        return new Promise(function (resolve, reject) {
+            function _animte() {
+                var time = setTimeout(function () {
+                    var marginLeft = parseInt(ball.style.marginLeft, 10)
+                    if (marginLeft === distance) {
+                        clearTimeout(time)
+                        resolve()
+                        return
+                    } else if (marginLeft < distance) {
+                        marginLeft++
+                    } else {
+                        marginLeft--
+                    }
+
+                    ball.style.marginLeft = marginLeft + "px"
+                    _animte()
+                }, 13)
+            }
+
+            _animte()
+        })
+    }
+    promiseAnimate(ball1, 100)
+        .then(function () {
+            return promiseAnimate(ball2, 200)
+        })
+        .then(function () {
+            return promiseAnimate(ball3, 300)
+        })
+        .then(function () {
+            return promiseAnimate(ball3, 150)
+        })
+        .then(function () {
+            return promiseAnimate(ball2, 150)
+        })
+        .then(function () {
+            return promiseAnimate(ball1, 150)
+        })
+</script>
+</html>

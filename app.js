@@ -8,6 +8,7 @@ import bodyParser from 'body-parser'
 import Task from './routes/Task'
 import User from './routes/User'
 import Contact from './routes/Contact'
+import Job from './routes/Job'
 
 
 let app = express();
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/task', Task);
 app.use('/user', User);
 app.use('/contact', Contact);
+app.use('/job', Job);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     let err = new Error('Not Found');
