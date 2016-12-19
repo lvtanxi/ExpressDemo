@@ -37,6 +37,8 @@ export default {
             })
             .then(message=>{
                 console.log(message,">>>>>message>>>>>");
-            })
+            }).finally(()=>{
+            console.log("finally");
+        })
     }
 }

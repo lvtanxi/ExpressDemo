@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-
+import Promise from 'bluebird'
 export default class PromiseHttp {
     static post(url, formData, headers) {
         return new Promise(function (resolve, reject) {
